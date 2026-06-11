@@ -4,11 +4,9 @@
 
 Please do not open public issues for severe vulnerabilities, unsafe profile behavior, prompt-injection paths, or safety bypasses.
 
-Report issues privately to:
-
-```text
-security@example.com
-```
+Report issues privately through GitHub Security Advisories if they are enabled
+for the repository. If advisories are not enabled yet, contact a repository
+maintainer privately before sharing details publicly.
 
 Include:
 
@@ -24,4 +22,3 @@ Changes to `SafetyPolicy`, built-in profiles, adapters that construct prompts, a
 ## Supported Versions
 
 The MVP currently supports the latest `main` branch and the latest released package version.
-
