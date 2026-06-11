@@ -21,7 +21,13 @@ class AffectEngine:
         "praise": ("great", "good job", "thanks", "thank you", "perfect", "helpful"),
         "confusion": ("confused", "don't understand", "do not understand", "what do you mean"),
         "frustration": ("annoying", "frustrated", "not working", "unacceptable"),
-        "repeated_failure": ("three times", "again", "still did not", "still didn't", "same problem"),
+        "repeated_failure": (
+            "three times",
+            "again",
+            "still did not",
+            "still didn't",
+            "same problem",
+        ),
     }
 
     def __init__(
@@ -43,7 +49,7 @@ class AffectEngine:
         self._last_state_after = self.state.to_dict()
 
     @classmethod
-    def from_profile(cls, path_or_name: str | Path) -> "AffectEngine":
+    def from_profile(cls, path_or_name: str | Path) -> AffectEngine:
         """Create an engine from a YAML profile path or profile name."""
 
         return cls(load_profile(path_or_name))
@@ -100,7 +106,10 @@ class AffectEngine:
             "- Be direct, useful, and proportionate to the simulated state.",
             "- Maintain professional boundaries.",
             "- Avoid abuse, threats, harassment, manipulation, and claims of real emotions.",
-            "- The emotional state is simulated and should only influence tone and interaction style.",
+            (
+                "- The emotional state is simulated and should only influence tone and "
+                "interaction style."
+            ),
         ]
         return self.safety_policy.validate_prompt("\n".join(guidance))
 
@@ -143,7 +152,10 @@ class AffectEngine:
         return "high"
 
 
-def extract_user_input(payload: dict[str, Any], preferred_keys: Iterable[str] = ("input", "user_input")) -> str:
+def extract_user_input(
+    payload: dict[str, Any],
+    preferred_keys: Iterable[str] = ("input", "user_input"),
+) -> str:
     """Extract a user input string from common agent payload shapes."""
 
     for key in preferred_keys:

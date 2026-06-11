@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import pytest
+from pydantic import ValidationError
 
 from affectkit.profiles import EmotionProfile, load_profile
 
@@ -18,7 +19,7 @@ def test_load_profile_by_path() -> None:
 
 
 def test_invalid_profile_validation_rejects_unknown_state() -> None:
-    with pytest.raises(Exception):
+    with pytest.raises(ValidationError):
         EmotionProfile(
             name="invalid",
             description="invalid profile",
@@ -45,6 +46,5 @@ safety: {}
 """,
         encoding="utf-8",
     )
-    with pytest.raises(Exception):
+    with pytest.raises(ValidationError):
         load_profile(path)
-

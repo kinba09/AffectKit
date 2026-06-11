@@ -100,7 +100,7 @@ class EmotionState:
 
         return {field.name: getattr(self, field.name) for field in fields(self)}
 
-    def copy(self) -> "EmotionState":
+    def copy(self) -> EmotionState:
         """Return a detached copy of the state."""
 
         return EmotionState(**self.to_dict())
@@ -135,7 +135,7 @@ class EmotionState:
         ]
         return clamp(max([*volatile, *destabilizers]))
 
-    def apply_delta(self, delta: dict[str, float]) -> "EmotionState":
+    def apply_delta(self, delta: dict[str, float]) -> EmotionState:
         """Apply per-field changes and clamp all resulting values."""
 
         for key, change in delta.items():
@@ -144,7 +144,7 @@ class EmotionState:
             setattr(self, key, clamp(getattr(self, key) + float(change)))
         return self
 
-    def decay(self, rate: float) -> "EmotionState":
+    def decay(self, rate: float) -> EmotionState:
         """Move state variables toward safe calm baselines."""
 
         rate = clamp(rate)

@@ -58,7 +58,9 @@ class EmotionProfile(BaseModel):
                     raise ValueError(f"Unknown transition field: {key}")
                 number = float(raw)
                 if not -1.0 <= number <= 1.0:
-                    raise ValueError(f"transition_rules.{event_name}.{key} must be between -1.0 and 1.0")
+                    raise ValueError(
+                        f"transition_rules.{event_name}.{key} must be between -1.0 and 1.0"
+                    )
                 output[str(event_name)][str(key)] = number
         return output
 
