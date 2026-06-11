@@ -1,5 +1,6 @@
 from affectkit import AffectEngine
 from affectkit.adapters.basic import AffectWrapper
+from affectkit.adapters.langchain import with_affect, wrap_langchain_agent
 from affectkit.adapters.langgraph import create_affect_node
 
 
@@ -56,3 +57,34 @@ def test_langgraph_node_output_shape() -> None:
     assert "detected_events" in state
     assert "confusion" in state["detected_events"]
 
+
+def test_langchain_with_affect_alias_injects_context() -> None:
+    class Agent:
+        def invoke(self, payload: dict) -> dict:
+            return {
+                "output": "ok",
+                "has_affect_context": "affect_context" in payload,
+                "has_emotion_state": "emotion_state" in payload,
+                "events": payload["detected_events"],
+            }
+
+    engine = AffectEngine.from_profile("calm_supportive")
+    wrapped = with_affect(Agent(), engine)
+    result = wrapped.invoke({"input": "This is not working."})
+
+    assert result["has_affect_context"] is True
+    assert result["has_emotion_state"] is True
+    assert result["events"] == ["frustration"]
+    assert len(engine.memory) == 1
+
+
+def test_wrap_langchain_agent_remains_supported() -> None:
+    class Agent:
+        def invoke(self, payload: dict) -> str:
+            return payload["affect_context"]
+
+    engine = AffectEngine.from_profile("calm_supportive")
+    wrapped = wrap_langchain_agent(Agent(), engine)
+    result = wrapped.invoke({"input": "Thanks, good job."})
+
+    assert "Current simulated affective state" in result

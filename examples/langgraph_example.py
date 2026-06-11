@@ -3,7 +3,7 @@ from affectkit.adapters.langgraph import create_affect_node
 
 
 def main() -> None:
-    engine = AffectEngine.from_profile("profiles/anxious_researcher.yaml")
+    engine = AffectEngine.from_profile("anxious_researcher")
     affect_node = create_affect_node(engine)
 
     state = {
@@ -18,4 +18,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

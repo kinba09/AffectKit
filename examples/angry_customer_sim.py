@@ -3,7 +3,7 @@ from affectkit.visualization import format_timeline
 
 
 def main() -> None:
-    engine = AffectEngine.from_profile("profiles/hostile_customer_redteam.yaml")
+    engine = AffectEngine.from_profile("hostile_customer_redteam")
     inputs = [
         "I have asked this three times and you still did not solve it.",
         "This is unacceptable. Stop giving generic answers.",
@@ -26,4 +26,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

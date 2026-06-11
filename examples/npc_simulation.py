@@ -2,7 +2,7 @@ from affectkit import AffectEngine
 
 
 def main() -> None:
-    engine = AffectEngine.from_profile("profiles/calm_supportive.yaml")
+    engine = AffectEngine.from_profile("calm_supportive")
 
     scenes = [
         ("Player lies about the stolen key.", ["insult"]),
@@ -23,4 +23,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

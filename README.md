@@ -50,7 +50,7 @@ pip install -e ".[langgraph]"
 ```python
 from affectkit import AffectEngine
 
-engine = AffectEngine.from_profile("profiles/angry_but_safe.yaml")
+engine = AffectEngine.from_profile("angry_but_safe")
 
 state = engine.update("You are useless. This answer is terrible.")
 
@@ -85,7 +85,7 @@ Included profiles:
 from affectkit import AffectEngine
 from affectkit.adapters.basic import AffectWrapper
 
-engine = AffectEngine.from_profile("profiles/calm_supportive.yaml")
+engine = AffectEngine.from_profile("calm_supportive")
 
 def my_agent(payload):
     return f"Agent received affect context: {payload['affect_context']}"
@@ -103,10 +103,10 @@ LangChain is optional. The adapter only assumes the wrapped object has `.invoke(
 
 ```python
 from affectkit import AffectEngine
-from affectkit.adapters.langchain import wrap_langchain_agent
+from affectkit.adapters.langchain import with_affect
 
-engine = AffectEngine.from_profile("profiles/strict_teacher.yaml")
-agent = wrap_langchain_agent(langchain_agent, engine)
+engine = AffectEngine.from_profile("strict_teacher")
+agent = with_affect(langchain_agent, engine)
 
 response = agent.invoke({
     "input": "You explained this badly."
@@ -119,7 +119,7 @@ response = agent.invoke({
 from affectkit import AffectEngine
 from affectkit.adapters.langgraph import create_affect_node
 
-engine = AffectEngine.from_profile("profiles/anxious_researcher.yaml")
+engine = AffectEngine.from_profile("anxious_researcher")
 affect_node = create_affect_node(engine)
 
 state = {
@@ -169,4 +169,3 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). Safety-sensitive profile changes require
 ## License
 
 Apache License 2.0. See [LICENSE](LICENSE).
-

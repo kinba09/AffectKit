@@ -10,7 +10,7 @@ def my_agent(payload: dict) -> str:
 
 
 def main() -> None:
-    engine = AffectEngine.from_profile("profiles/calm_supportive.yaml")
+    engine = AffectEngine.from_profile("calm_supportive")
     wrapped = AffectWrapper(my_agent, engine)
 
     result = wrapped.invoke("I am frustrated with this product.")
@@ -21,4 +21,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

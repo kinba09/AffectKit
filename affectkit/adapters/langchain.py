@@ -30,10 +30,19 @@ class AffectLangChainWrapper:
         return result
 
 
-def wrap_langchain_agent(agent: Any, engine: AffectEngine) -> AffectLangChainWrapper:
-    """Wrap a LangChain-like agent or runnable."""
+def with_affect(agent: Any, engine: AffectEngine) -> AffectLangChainWrapper:
+    """Add AffectKit context to a LangChain-like agent or runnable."""
 
     return AffectLangChainWrapper(agent, engine)
+
+
+def wrap_langchain_agent(agent: Any, engine: AffectEngine) -> AffectLangChainWrapper:
+    """Wrap a LangChain-like agent or runnable.
+
+    This is kept as an explicit alias for users who prefer descriptive names.
+    """
+
+    return with_affect(agent, engine)
 
 
 def _stringify_result(result: Any) -> str:
@@ -45,4 +54,3 @@ def _stringify_result(result: Any) -> str:
             if isinstance(value, str):
                 return value
     return str(result)
-

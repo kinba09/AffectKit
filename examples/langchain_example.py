@@ -1,5 +1,5 @@
 from affectkit import AffectEngine
-from affectkit.adapters.langchain import wrap_langchain_agent
+from affectkit.adapters.langchain import with_affect
 
 
 class MockLangChainAgent:
@@ -11,8 +11,8 @@ class MockLangChainAgent:
 
 
 def main() -> None:
-    engine = AffectEngine.from_profile("profiles/strict_teacher.yaml")
-    agent = wrap_langchain_agent(MockLangChainAgent(), engine)
+    engine = AffectEngine.from_profile("strict_teacher")
+    agent = with_affect(MockLangChainAgent(), engine)
 
     response = agent.invoke({"input": "You explained this badly."})
     print(response)
@@ -21,4 +21,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
