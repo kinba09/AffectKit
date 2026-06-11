@@ -12,6 +12,11 @@ def test_load_profile_by_name() -> None:
     assert profile.initial_state["trust"] > 0.5
 
 
+def test_load_builtin_profile_by_yaml_name() -> None:
+    profile = load_profile("calm_supportive.yaml")
+    assert profile.name == "calm_supportive"
+
+
 def test_load_profile_by_path() -> None:
     profile = load_profile("profiles/angry_but_safe.yaml")
     assert profile.name == "angry_but_safe"

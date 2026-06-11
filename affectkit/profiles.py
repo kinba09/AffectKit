@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from importlib import resources
 from pathlib import Path
 from typing import Any
 
@@ -66,7 +67,7 @@ class EmotionProfile(BaseModel):
 
 
 def resolve_profile_path(path_or_name: str | Path) -> Path:
-    """Resolve a profile path or profile name to a YAML file."""
+    """Resolve a local profile path or profile name to a YAML file."""
 
     requested = Path(path_or_name).expanduser()
     candidates: list[Path] = []
@@ -97,9 +98,30 @@ def resolve_profile_path(path_or_name: str | Path) -> Path:
 def load_profile(path_or_name: str | Path) -> EmotionProfile:
     """Load an ``EmotionProfile`` from YAML."""
 
-    path = resolve_profile_path(path_or_name)
-    with path.open("r", encoding="utf-8") as file:
-        data = yaml.safe_load(file)
+    try:
+        path = resolve_profile_path(path_or_name)
+    except FileNotFoundError:
+        data = _load_builtin_profile(path_or_name)
+    else:
+        with path.open("r", encoding="utf-8") as file:
+            data = yaml.safe_load(file)
+
     if not isinstance(data, dict):
-        raise ValueError(f"Profile file must contain a YAML mapping: {path}")
+        raise ValueError(f"Profile file must contain a YAML mapping: {path_or_name}")
     return EmotionProfile(**data)
+
+
+def _load_builtin_profile(path_or_name: str | Path) -> dict[str, Any]:
+    requested = Path(path_or_name)
+    if requested.parent != Path("."):
+        raise FileNotFoundError(f"Could not find profile {path_or_name!r}")
+
+    filename = requested.name if requested.suffix in {".yaml", ".yml"} else f"{requested.name}.yaml"
+    resource = resources.files("affectkit").joinpath("builtin_profiles", filename)
+    if not resource.is_file():
+        raise FileNotFoundError(f"Could not find built-in profile {path_or_name!r}")
+
+    data = yaml.safe_load(resource.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise ValueError(f"Built-in profile must contain a YAML mapping: {filename}")
+    return data
